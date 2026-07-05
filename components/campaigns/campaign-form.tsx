@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -44,15 +44,25 @@ export function CampaignForm({ campaign }: { campaign?: Campaign }) {
   });
 
   async function onSubmit(values: CampaignFormValues) {
-    const result = campaign ? await updateCampaign(campaign.id, values) : await createCampaign(values);
+    if (campaign) {
+      const result = await updateCampaign(campaign.id, values);
+      if (!result.success) {
+        toast.error(result.error);
+        return;
+      }
+      toast.success("Campaign updated");
+      router.push(`/campaigns/${campaign.id}`);
+      router.refresh();
+      return;
+    }
 
+    const result = await createCampaign(values);
     if (!result.success) {
       toast.error(result.error);
       return;
     }
-
-    toast.success(campaign ? "Campaign updated" : "Campaign created");
-    router.push(campaign ? `/campaigns/${campaign.id}` : `/campaigns/${result.data.id}`);
+    toast.success("Campaign created");
+    router.push(`/campaigns/${result.data.id}`);
     router.refresh();
   }
 
