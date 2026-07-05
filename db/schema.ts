@@ -57,7 +57,7 @@ export const profiles = pgTable("profiles", {
   fullName: text("full_name"),
   avatarUrl: text("avatar_url"),
   role: roleEnum("role").notNull().default("member"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
 });
 
 // ---------- Campaigns ----------
@@ -75,8 +75,8 @@ export const campaigns = pgTable("campaigns", {
   conversions: integer("conversions").notNull().default(0),
   revenueValue: numeric("revenue_value", { precision: 12, scale: 2 }).notNull().default("0"),
   ownerId: uuid("owner_id").notNull().references(() => profiles.id),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
 });
 
 // ---------- Campaign Members (junction) ----------
@@ -85,7 +85,7 @@ export const campaignMembers = pgTable(
   {
     campaignId: uuid("campaign_id").notNull().references(() => campaigns.id, { onDelete: "cascade" }),
     userId: uuid("user_id").notNull().references(() => profiles.id, { onDelete: "cascade" }),
-    addedAt: timestamp("added_at", { withTimezone: true }).notNull().defaultNow(),
+    addedAt: timestamp("added_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
   },
   (t) => ({
     pk: primaryKey({ columns: [t.campaignId, t.userId] }),
@@ -104,7 +104,7 @@ export const expenses = pgTable("expenses", {
   status: approvalStatusEnum("status").notNull().default("pending"),
   submittedBy: uuid("submitted_by").notNull().references(() => profiles.id),
   reviewedBy: uuid("reviewed_by").references(() => profiles.id),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
 });
 
 // ---------- Tasks ----------
@@ -121,8 +121,8 @@ export const tasks = pgTable("tasks", {
   requiresApproval: boolean("requires_approval").notNull().default(false),
   approvalStatus: approvalStatusEnum("approval_status").notNull().default("approved"),
   createdBy: uuid("created_by").notNull().references(() => profiles.id),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
 });
 
 // ---------- Campaign Analytics (daily snapshots, optional mock ingestion) ----------
@@ -133,7 +133,7 @@ export const campaignAnalytics = pgTable("campaign_analytics", {
   spend: numeric("spend", { precision: 12, scale: 2 }).notNull().default("0"),
   leads: integer("leads").notNull().default(0),
   conversions: integer("conversions").notNull().default(0),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true, mode: "string" }).notNull().defaultNow(),
 });
 
 // ---------- Relations ----------
