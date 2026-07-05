@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  PulseFlow design tokens.
+  Palette: deep navy/ink surfaces, electric cobalt as the single high-energy
+  accent (campaign momentum), amber for budget risk, emerald for healthy ROI.
+  Display type: Space Grotesk (angular, technical, a little unusual for SaaS).
+  Body: Inter. Data/numerals: IBM Plex Mono, so every metric reads as data,
+  not prose — the tabular figures never wobble in width either.
+*/
+
+:root {
+  --background: 220 25% 97%;
+  --foreground: 222 47% 11%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 222 47% 11%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 222 47% 11%;
+
+  --primary: 231 84% 58%;        /* electric cobalt #3B5BFF-ish */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 220 20% 94%;
+  --secondary-foreground: 222 47% 11%;
+
+  --muted: 220 20% 94%;
+  --muted-foreground: 220 9% 46%;
+
+  --accent: 231 84% 96%;
+  --accent-foreground: 231 84% 40%;
+
+  --destructive: 351 83% 61%;
+  --destructive-foreground: 0 0% 100%;
+
+  --success: 160 84% 32%;
+  --success-foreground: 0 0% 100%;
+
+  --warning: 38 92% 50%;
+  --warning-foreground: 26 40% 15%;
+
+  --border: 220 15% 88%;
+  --input: 220 15% 88%;
+  --ring: 231 84% 58%;
+
+  --radius: 0.625rem;
+
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Space Grotesk", var(--font-sans);
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+.dark {
+  --background: 222 47% 7%;
+  --foreground: 220 20% 94%;
+
+  --card: 222 40% 10%;
+  --card-foreground: 220 20% 94%;
+
+  --popover: 222 40% 10%;
+  --popover-foreground: 220 20% 94%;
+
+  --primary: 231 90% 65%;
+  --primary-foreground: 222 47% 7%;
+
+  --secondary: 222 30% 15%;
+  --secondary-foreground: 220 20% 94%;
+
+  --muted: 222 30% 15%;
+  --muted-foreground: 220 10% 60%;
+
+  --accent: 231 50% 18%;
+  --accent-foreground: 231 90% 75%;
+
+  --destructive: 351 80% 63%;
+  --destructive-foreground: 0 0% 100%;
+
+  --success: 160 70% 42%;
+  --success-foreground: 222 47% 7%;
+
+  --warning: 38 92% 55%;
+  --warning-foreground: 26 40% 10%;
+
+  --border: 222 25% 18%;
+  --input: 222 25% 18%;
+  --ring: 231 90% 65%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  font-feature-settings: "cv11", "ss01";
+}
+
+.font-display {
+  font-family: var(--font-display);
+  letter-spacing: -0.01em;
+}
+
+.font-data {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Signature element: a thin animated pulse line used behind the brand mark.
+   Evokes a heartbeat/ECG trace — momentum of live campaigns — without
+   overusing motion elsewhere in the product. */
+.pulse-trace {
+  stroke-dasharray: 300;
+  stroke-dashoffset: 300;
+  animation: pulse-draw 3.2s ease-in-out infinite;
+}
+
+@keyframes pulse-draw {
+  0% { stroke-dashoffset: 300; opacity: 0.3; }
+  50% { stroke-dashoffset: 0; opacity: 1; }
+  100% { stroke-dashoffset: -300; opacity: 0.3; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-trace { animation: none; stroke-dashoffset: 0; opacity: 0.6; }
+}
